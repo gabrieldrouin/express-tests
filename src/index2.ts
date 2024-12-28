@@ -1,9 +1,12 @@
 // fetch.ts
 import express from "express";
 import { middleware } from "#middlewares/middlewares.js";
+import cors from "cors";
 
 const app = express();
 const port = "4000";
+
+app.use(cors());
 
 app.get("/", middleware);
 
