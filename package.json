@@ -4,7 +4,7 @@
   "description": "An Express.js template with TypeScript, ESLint and Prettier",
   "type": "module",
   "scripts": {
-    "bank": "tsx --watch .env src/bank.ts",
+    "bank": "tsx --watch src/bank.ts",
     "streaming": "tsx --watch src/streaming.ts",
     "broker": "tsx --watch src/broker.ts",
     "build": "tsc",
