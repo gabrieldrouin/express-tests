@@ -4,9 +4,8 @@
   "description": "An Express.js template with TypeScript, ESLint and Prettier",
   "type": "module",
   "scripts": {
-    "bank": "tsx --watch src/bank.ts",
-    "streaming": "tsx --watch src/streaming.ts",
-    "broker": "tsx --watch src/broker.ts",
+    "dev": "tsx --watch --env-file .env src/index.ts",
+    "start": "node --env-file .env dist/index.js",
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
@@ -21,13 +20,15 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@tsconfig/node-lts": "^22.0.1",
-    "@types/cors": "^2.8.17",
+    "@tsconfig/node22": "^22.0.0",
     "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.10.2",
     "eslint": "^9.17.0",
     "husky": "^9.1.7",
