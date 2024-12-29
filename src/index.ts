@@ -8,16 +8,59 @@ import { middleware } from "#middlewares/middlewares.js";
 const app = express();
 const port = process.env.PORT ?? "9001";
 
+interface User {
+  id: number;
+  name: string;
+  age: number;
+}
+
+interface UserQueryParams {
+  filter?: keyof User;
+  value?: string;
+}
+
 const users = [
-  { id: 1, name: "one" },
-  { id: 2, name: "two" },
-  { id: 3, name: "three" },
+  { id: 1, name: "one", age: 1 },
+  { id: 2, name: "two", age: 2 },
+  { id: 3, name: "three", age: 3 },
 ];
 
 app.use(helmet());
 app.use(morgan("tiny"));
 
 app.get("/", middleware);
+
+app.get("/api/users/", (req, res) => {
+  const query = req.query as UserQueryParams;
+  const { filter, value } = query;
+
+  if (!filter && !value) {
+    res.status(200).json(users);
+    return;
+  }
+
+  if (!filter || !value) {
+    res.status(400).json({ error: "Missing required query parameters" });
+    return;
+  }
+
+  let result: User[];
+
+  if (filter === "name") {
+    result = users.filter((user) => user[filter].includes(value));
+  } else {
+    const numValue = parseInt(value);
+    result = users.filter((user) => user[filter] === numValue);
+  }
+
+  if (result.length === 0) {
+    res.status(404).json({ error: "No users found matching criteria" });
+    return;
+  }
+
+  res.status(200).json(result);
+  return;
+});
 
 app.get("/api/users/:id", (req, res) => {
   const userId = parseInt(req.params.id);
