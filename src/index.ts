@@ -5,13 +5,14 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { middleware } from "#middlewares/middlewares.js";
 
-const app = express();
-const port = process.env.PORT ?? "9001";
-
 interface User {
   id: number;
   name: string;
   age: number;
+}
+
+interface postBody {
+  name: string;
 }
 
 interface UserQueryParams {
@@ -25,10 +26,23 @@ const users = [
   { id: 3, name: "three", age: 3 },
 ];
 
+const app = express();
+const port = process.env.PORT ?? "9001";
+
+app.use(express.json());
 app.use(helmet());
 app.use(morgan("tiny"));
 
 app.get("/", middleware);
+
+app.post("/api/users/", (req, res) => {
+  const body = req.body as postBody;
+  const newUser = { id: users[users.length - 1].id + 1, name: body.name, age: users[users.length - 1].id + 1 };
+  users.push(newUser);
+
+  console.log(users);
+  res.status(200).json({ status: "ok" });
+});
 
 app.get("/api/users/", (req, res) => {
   const query = req.query as UserQueryParams;
