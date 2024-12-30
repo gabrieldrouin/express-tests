@@ -103,7 +103,7 @@ app.get("/api/users/:id", (req, res) => {
 
 app.patch("/api/users/:id", (req, res) => {
   const body = req.body as UserUpdateBody;
-  const id = req.params.id;
+  const { id } = req.params;
 
   if (isNaN(parseInt(id))) {
     res.sendStatus(400);
@@ -130,7 +130,7 @@ app.patch("/api/users/:id", (req, res) => {
 
 app.put("/api/users/:id", (req, res) => {
   const body = req.body as UserPutBody;
-  const id = req.params.id;
+  const { id } = req.params;
 
   if (isNaN(parseInt(id))) {
     res.sendStatus(400);
