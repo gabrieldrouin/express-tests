@@ -96,7 +96,7 @@ app.get("/api/users/:id", (req, res) => {
   else res.status(404).json({ error: "user not found" });
 });
 
-app.put("/api/users/:id", (req, res) => {
+app.patch("/api/users/:id", (req, res) => {
   const body = req.body as UserUpdateBody;
   const id = req.params.id;
 
