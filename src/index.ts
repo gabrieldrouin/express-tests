@@ -11,6 +11,11 @@ interface User {
   age: number;
 }
 
+interface UserPutBody {
+  name: string;
+  age: number;
+}
+
 interface postBody {
   name: string;
 }
@@ -117,6 +122,30 @@ app.patch("/api/users/:id", (req, res) => {
   } else if ("age" in body) {
     users[userIndex].age = body.age;
   }
+
+  console.log(users);
+
+  res.json(users[userIndex]);
+});
+
+app.put("/api/users/:id", (req, res) => {
+  const body = req.body as UserPutBody;
+  const id = req.params.id;
+
+  if (isNaN(parseInt(id))) {
+    res.sendStatus(400);
+    return;
+  }
+
+  const userIndex = users.findIndex((user) => user.id === parseInt(id));
+
+  if (userIndex === -1) {
+    res.sendStatus(404);
+    return;
+  }
+
+  users[userIndex].name = body.name;
+  users[userIndex].age = body.age;
 
   console.log(users);
 
