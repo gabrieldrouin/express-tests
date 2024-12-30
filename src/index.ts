@@ -20,6 +20,14 @@ interface UserQueryParams {
   value?: string;
 }
 
+type UserUpdateBody =
+  | {
+      name: string;
+    }
+  | {
+      age: number;
+    };
+
 const users = [
   { id: 1, name: "one", age: 1 },
   { id: 2, name: "two", age: 2 },
@@ -86,6 +94,33 @@ app.get("/api/users/:id", (req, res) => {
   const user = users.find((user) => user.id === userId);
   if (user) res.status(200).json(user);
   else res.status(404).json({ error: "user not found" });
+});
+
+app.put("/api/users/:id", (req, res) => {
+  const body = req.body as UserUpdateBody;
+  const id = req.params.id;
+
+  if (isNaN(parseInt(id))) {
+    res.sendStatus(400);
+    return;
+  }
+
+  const userIndex = users.findIndex((user) => user.id === parseInt(id));
+
+  if (userIndex === -1) {
+    res.sendStatus(404);
+    return;
+  }
+
+  if ("name" in body) {
+    users[userIndex].name = body.name;
+  } else if ("age" in body) {
+    users[userIndex].age = body.age;
+  }
+
+  console.log(users);
+
+  res.json(users[userIndex]);
 });
 
 app.listen(port, () => {
