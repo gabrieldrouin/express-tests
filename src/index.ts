@@ -144,8 +144,7 @@ app.put("/api/users/:id", (req, res) => {
     return;
   }
 
-  users[userIndex].name = body.name;
-  users[userIndex].age = body.age;
+  users[userIndex] = { ...users[userIndex], ...body };
 
   console.log(users);
 
