@@ -151,6 +151,26 @@ app.put("/api/users/:id", (req, res) => {
   res.json(users[userIndex]);
 });
 
+app.delete("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+
+  if (isNaN(parseInt(id))) {
+    res.sendStatus(400);
+    return;
+  }
+
+  const userIndex = users.findIndex((user) => user.id === parseInt(id));
+
+  if (userIndex === -1) {
+    res.sendStatus(404);
+    return;
+  }
+
+  users.splice(userIndex);
+
+  res.json(users);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
