@@ -20,7 +20,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 10000,
+      maxAge: 3000,
     },
   }),
 );
@@ -33,13 +33,15 @@ declare module "express-session" {
 }
 
 app.get("/", (req, res) => {
+  console.log("\n");
+  console.log(req.session);
   console.log(req.sessionID);
   req.session.visited = true;
   //res.cookie("name", "val", { maxAge: 5000, signed: true });
   //res.cookie("name2", "val2", { maxAge: 5000, signed: true });
   res.send({ msg: "set a cookie." });
-  //console.log(req.headers.cookie);
-  //console.log(req.cookies);
+  console.log(req.headers.cookie);
+  console.log(req.signedCookies);
 });
 
 app.listen(port, () => {

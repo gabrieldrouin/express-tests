@@ -36,6 +36,14 @@ userRouter.get("/", (req, res) => {
   const query = req.query as UserQueryParams;
   const { filter, value } = query;
 
+  console.log("\n");
+  console.log(req.headers.cookie);
+  console.log(req.signedCookies);
+  req.sessionStore.get(req.session.id, (err, session) => {
+    console.log("session:");
+    console.log(session);
+  });
+
   if (!filter && !value) {
     res.status(200).json(users);
     return;
