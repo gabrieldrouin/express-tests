@@ -5,6 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import passport from "passport";
 import routes from "#routes/index.js";
 
 const app = express();
@@ -24,6 +25,9 @@ app.use(
     },
   }),
 );
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(routes);
 
 declare module "express-session" {

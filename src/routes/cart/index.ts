@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserBody } from "#routes/users/index.js";
+import { UserBody } from "#utils/constants.js";
 
 const cartRouter = Router();
 

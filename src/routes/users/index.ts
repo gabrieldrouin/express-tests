@@ -1,14 +1,6 @@
+import { User, UserBody, users } from "#utils/constants.js";
 import { Router } from "express";
 
-export interface UserBody {
-  name: string;
-  age: number;
-  password: string;
-}
-
-interface User extends UserBody {
-  id: number;
-}
 interface PostBody {
   name: string;
   password: string;
@@ -24,12 +16,6 @@ export type UserUpdateBody =
   | {
       age: number;
     };
-
-export const users = [
-  { id: 1, name: "one", age: 1, password: "one" },
-  { id: 2, name: "two", age: 2, password: "two" },
-  { id: 3, name: "three", age: 3, password: "three" },
-];
 
 const userRouter = Router();
 
