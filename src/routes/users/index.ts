@@ -1,16 +1,17 @@
 import { Router } from "express";
 
-interface User {
-  id: number;
+export interface UserBody {
   name: string;
   age: number;
+  password: string;
 }
-interface UserPutBody {
-  name: string;
-  age: number;
+
+interface User extends UserBody {
+  id: number;
 }
 interface PostBody {
   name: string;
+  password: string;
 }
 interface UserQueryParams {
   filter?: keyof User;
@@ -24,10 +25,10 @@ export type UserUpdateBody =
       age: number;
     };
 
-const users = [
-  { id: 1, name: "one", age: 1 },
-  { id: 2, name: "two", age: 2 },
-  { id: 3, name: "three", age: 3 },
+export const users = [
+  { id: 1, name: "one", age: 1, password: "one" },
+  { id: 2, name: "two", age: 2, password: "two" },
+  { id: 3, name: "three", age: 3, password: "three" },
 ];
 
 const userRouter = Router();
@@ -74,7 +75,12 @@ userRouter.get("/", (req, res) => {
 
 userRouter.post("/", (req, res) => {
   const body = req.body as PostBody;
-  const newUser = { id: users[users.length - 1].id + 1, name: body.name, age: users[users.length - 1].id + 1 };
+  const newUser = {
+    id: users[users.length - 1].id + 1,
+    name: body.name,
+    age: users[users.length - 1].id + 1,
+    password: body.password,
+  };
   users.push(newUser);
 
   console.log(users);
@@ -97,7 +103,7 @@ userRouter.get("/", (req, res) => {
 
   let result: User[];
 
-  if (filter === "name") {
+  if (filter === "name" || filter === "password") {
     result = users.filter((user) => user[filter].includes(value));
   } else {
     const numValue = parseInt(value);
@@ -153,7 +159,7 @@ userRouter.patch("/:id", (req, res) => {
 });
 
 userRouter.put("/:id", (req, res) => {
-  const body = req.body as UserPutBody;
+  const body = req.body as UserBody;
   const { id } = req.params;
 
   if (isNaN(parseInt(id))) {
