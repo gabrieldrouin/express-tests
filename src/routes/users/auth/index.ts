@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { users, UserBody } from "../index.js";
+import { users, UserBody } from "#routes/users/index.js";
 
 declare module "express-session" {
   interface SessionData {
