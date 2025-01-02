@@ -1,4 +1,4 @@
-import { User, UserBody, users } from "#utils/constants.js";
+import { IUser, UserBody, users } from "#utils/constants.js";
 import { Router } from "express";
 
 interface PostBody {
@@ -6,7 +6,7 @@ interface PostBody {
   password: string;
 }
 interface UserQueryParams {
-  filter?: keyof User;
+  filter?: keyof IUser;
   value?: string;
 }
 export type UserUpdateBody =
@@ -41,7 +41,7 @@ userRouter.get("/", (req, res) => {
     return;
   }
 
-  let result: User[];
+  let result: IUser[];
 
   if (filter === "name") {
     result = users.filter((user) => user[filter].includes(value));
@@ -87,7 +87,7 @@ userRouter.get("/", (req, res) => {
     return;
   }
 
-  let result: User[];
+  let result: IUser[];
 
   if (filter === "name" || filter === "password") {
     result = users.filter((user) => user[filter].includes(value));
