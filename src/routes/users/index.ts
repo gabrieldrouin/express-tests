@@ -1,5 +1,6 @@
 import { IUser, UserBody, users } from "#utils/constants.js";
 import { Router } from "express";
+import { User } from "#mongoose/schemas/user.js";
 
 interface PostBody {
   name: string;
@@ -59,18 +60,17 @@ userRouter.get("/", (req, res) => {
   return;
 });
 
-userRouter.post("/", (req, res) => {
+userRouter.post("/", async (req, res) => {
   const body = req.body as PostBody;
-  const newUser = {
-    id: users[users.length - 1].id + 1,
-    name: body.name,
-    age: users[users.length - 1].id + 1,
-    password: body.password,
-  };
-  users.push(newUser);
-
-  console.log(users);
-  res.status(200).json({ status: "ok" });
+  const newUser = new User(body);
+  try {
+    const savedUser = await newUser.save();
+    res.status(201).send(savedUser);
+    return;
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
 });
 
 userRouter.get("/", (req, res) => {

@@ -6,6 +6,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
+import mongoose from "mongoose";
 import "./strategies/local-strategy.js";
 import routes from "#routes/index.js";
 
@@ -17,6 +18,15 @@ declare module "express-session" {
 
 const app = express();
 const port = process.env.PORT ?? "9001";
+
+mongoose
+  .connect("mongodb://localhost:27017/express_tutorial")
+  .then(() => {
+    console.log("Connected to Mongo");
+  })
+  .catch((err: unknown) => {
+    console.log(err);
+  });
 
 app.use(express.json());
 app.use(helmet());
@@ -38,17 +48,19 @@ app.use(passport.session());
 app.use(routes);
 
 app.post("/api/auth/login", passport.authenticate("local") as RequestHandler, (req, res) => {
+  console.log("ok");
   res.sendStatus(200);
 });
 
-app.post("/api/auth/logout", passport.authenticate("local") as RequestHandler, (req, res) => {
+app.post("/api/auth/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
-      res.sendStatus(400);
+      console.error("Logout error:", err);
+      res.sendStatus(500);
       return;
     }
+    res.sendStatus(200);
   });
-  res.sendStatus(200);
 });
 
 app.get("/api/auth/status", (req, res) => {

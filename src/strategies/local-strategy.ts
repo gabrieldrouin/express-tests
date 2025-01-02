@@ -1,13 +1,14 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { users } from "#utils/constants.js";
+import { User } from "#mongoose/schemas/user.js";
+import { Types } from "mongoose";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface User {
+      _id: Types.ObjectId;
       name: string;
-      id: number;
       age: number;
       password: string;
     }
@@ -16,32 +17,39 @@ declare global {
 
 passport.serializeUser((user, done) => {
   console.log("serializing");
-  done(null, user.id);
+  done(null, user._id);
 });
 
-passport.deserializeUser((id, done) => {
-  try {
-    console.log("\n");
-    console.log("deserializing");
-    const findUser = users.find((user) => user.id === id);
-    if (!findUser) throw new Error("User not found");
-    done(null, findUser);
-  } catch (err) {
-    done(err, false);
-  }
+passport.deserializeUser((id: string, done) => {
+  console.log("deserializing");
+  User.findOne({ _id: id })
+    .then((findUser) => {
+      if (!findUser) throw new Error("User not found");
+      done(null, findUser);
+    })
+    .catch((err: unknown) => {
+      done(err, false);
+    });
 });
 
 export default passport.use(
-  new Strategy((name, password, done) => {
-    try {
+  new Strategy(
+    {
+      usernameField: "name",
+      passwordField: "password",
+    },
+    (name, password, done) => {
       console.log(name);
       console.log(password);
-      const findUser = users.find((user) => user.name === name);
-      if (!findUser) throw new Error("User not found");
-      if (findUser.password !== password) throw new Error("Bad credentials");
-      done(null, findUser);
-    } catch (err) {
-      done(err, false);
-    }
-  }),
+      User.findOne({ name })
+        .then((findUser) => {
+          if (!findUser) throw new Error("User not found");
+          if (findUser.password !== password) throw new Error("Bad credentials");
+          done(null, findUser);
+        })
+        .catch((err: unknown) => {
+          done(err, false);
+        });
+    },
+  ),
 );
