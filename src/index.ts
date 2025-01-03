@@ -8,7 +8,8 @@ import session from "express-session";
 import passport from "passport";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
-import "./strategies/local-strategy.js";
+//import "./strategies/local-strategy.js";
+import "./strategies/discord-strategy.js";
 import routes from "#routes/index.js";
 
 declare module "express-session" {
@@ -39,7 +40,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 20000,
+      maxAge: 200000,
     },
     store: MongoStore.create({
       client: mongoose.connection.getClient(),
@@ -52,7 +53,7 @@ app.use(passport.session());
 app.use(routes);
 
 app.post("/api/auth/login", passport.authenticate("local") as RequestHandler, (req, res) => {
-  console.log("ok");
+  console.log("ok auth local");
   res.sendStatus(200);
 });
 
@@ -88,6 +89,18 @@ app.get("/", (req, res) => {
   res.send({ msg: "set a cookie." });
   console.log(req.headers.cookie);
   console.log(req.signedCookies);
+});
+
+app.get("/api/auth/discord", passport.authenticate("discord") as RequestHandler, (req, res) => {
+  console.log("ok auth discord");
+  res.sendStatus(200);
+});
+
+app.get("/api/auth/discord/redirect", passport.authenticate("discord") as RequestHandler, (req, res) => {
+  console.log("ok auth discord redirect");
+  console.log(req.session);
+  console.log(req.user);
+  res.sendStatus(200);
 });
 
 app.listen(port, () => {

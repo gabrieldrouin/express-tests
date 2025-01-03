@@ -8,17 +8,17 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface User {
-      _id: Types.ObjectId;
-      name: string;
-      age: number;
-      password: string;
+      id?: Types.ObjectId;
+      name?: string;
+      age?: number;
+      password?: string;
     }
   }
 }
 
 passport.serializeUser((user, done) => {
   console.log("serializing");
-  done(null, user._id);
+  done(null, user.id);
 });
 
 passport.deserializeUser((id: string, done) => {
