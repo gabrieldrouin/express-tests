@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { User } from "#mongoose/schemas/user.js";
 import { Types } from "mongoose";
+import { comparePassword } from "#utils/helpers.js";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -44,7 +45,7 @@ export default passport.use(
       User.findOne({ name })
         .then((findUser) => {
           if (!findUser) throw new Error("User not found");
-          if (findUser.password !== password) throw new Error("Bad credentials");
+          if (!comparePassword(password, findUser.password)) throw new Error("Bad credentials");
           done(null, findUser);
         })
         .catch((err: unknown) => {

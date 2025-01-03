@@ -1,6 +1,7 @@
 import { IUser, UserBody, users } from "#utils/constants.js";
 import { Router } from "express";
 import { User } from "#mongoose/schemas/user.js";
+import { hashPassword } from "#utils/helpers.js";
 
 interface PostBody {
   name: string;
@@ -62,6 +63,8 @@ userRouter.get("/", (req, res) => {
 
 userRouter.post("/", async (req, res) => {
   const body = req.body as PostBody;
+  console.log(body);
+  body.password = hashPassword(body.password);
   const newUser = new User(body);
   try {
     const savedUser = await newUser.save();
