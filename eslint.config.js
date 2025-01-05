@@ -2,7 +2,7 @@
 
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
-import plugin from "eslint-plugin-jest";
+import vitest from "@vitest/eslint-plugin";
 
 export default tseslint.config(
   {
@@ -20,11 +20,12 @@ export default tseslint.config(
     },
   },
   {
-    files: ["**/*.spec.js", "**/*.test.js"],
-    plugins: { jest: plugin },
-    languageOptions: {
-      globals: plugin.environments.globals.globals,
+    files: ["**/*.test.ts", "**/*.spec.ts"],
+    plugins: {
+      vitest,
     },
-    ...plugin.configs["flat/recommended"],
+    rules: {
+      ...vitest.configs.recommended.rules,
+    },
   },
 );
