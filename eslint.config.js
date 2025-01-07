@@ -26,6 +26,7 @@ export default tseslint.config(
     },
     rules: {
       ...vitest.configs.recommended.rules,
+      "vitest/unbound-method": "error",
     },
   },
 );

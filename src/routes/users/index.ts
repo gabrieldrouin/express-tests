@@ -1,12 +1,7 @@
 import { IUser, UserBody, users } from "#utils/constants.js";
 import { Router } from "express";
-import { User } from "#mongoose/schemas/user.js";
-import { hashPassword } from "#utils/helpers.js";
+import { getUserByIdHandler } from "#handlers/users.js";
 
-interface PostBody {
-  name: string;
-  password: string;
-}
 interface UserQueryParams {
   filter?: keyof IUser;
   value?: string;
@@ -61,20 +56,7 @@ userRouter.get("/", (req, res) => {
   return;
 });
 
-userRouter.post("/", async (req, res) => {
-  const body = req.body as PostBody;
-  console.log(body);
-  body.password = hashPassword(body.password);
-  const newUser = new User(body);
-  try {
-    const savedUser = await newUser.save();
-    res.status(201).send(savedUser);
-    return;
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(400);
-  }
-});
+userRouter.post("/");
 
 userRouter.get("/", (req, res) => {
   const query = req.query as UserQueryParams;
@@ -108,17 +90,7 @@ userRouter.get("/", (req, res) => {
   return;
 });
 
-userRouter.get("/:id", (req, res) => {
-  const userId = parseInt(req.params.id);
-  if (isNaN(userId)) {
-    res.status(400).json({ error: "Invalid ID format" });
-    return;
-  }
-
-  const user = users.find((user) => user.id === userId);
-  if (user) res.status(200).json(user);
-  else res.status(404).json({ error: "user not found" });
-});
+userRouter.get("/:id", getUserByIdHandler);
 
 userRouter.patch("/:id", (req, res) => {
   const body = req.body as UserUpdateBody;
