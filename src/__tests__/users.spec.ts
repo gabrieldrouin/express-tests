@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getUserByIdHandler } from "#handlers/users.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-let mockRequest = {
+const mockRequest = {
   params: {
     id: "1",
   },

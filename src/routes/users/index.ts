@@ -8,14 +8,13 @@ interface UserQueryParams {
 }
 export type UserUpdateBody =
   | {
-      name: string;
+      name: number;
     }
   | {
       age: number;
     };
 
 const userRouter = Router();
-
 
 userRouter.get("/", (req, res) => {
   const query = req.query as UserQueryParams;
