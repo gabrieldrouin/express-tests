@@ -11,7 +11,7 @@ export type UserUpdateBody =
       name: string;
     }
   | {
-      age: string;
+      age: number;
     };
 
 const userRouter = Router();
