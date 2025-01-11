@@ -16,47 +16,6 @@ export type UserUpdateBody =
 
 const userRouter = Router();
 
-userRouter.get("/", (req, res) => {
-  const query = req.query as UserQueryParams;
-  const { filter, value } = query;
-
-  console.log("\n");
-  console.log(req.headers.cookie);
-  console.log(req.signedCookies);
-  req.sessionStore.get(req.session.id, (err, session) => {
-    console.log("session:");
-    console.log(session);
-  });
-
-  if (!filter && !value) {
-    res.status(200).json(users);
-    return;
-  }
-
-  if (!filter || !value) {
-    res.status(400).json({ error: "Missing required query parameters" });
-    return;
-  }
-
-  let result: IUser[];
-
-  if (filter === "name") {
-    result = users.filter((user) => user[filter].includes(value));
-  } else {
-    const numValue = parseInt(value);
-    result = users.filter((user) => user[filter] === numValue);
-  }
-
-  if (result.length === 0) {
-    res.status(404).json({ error: "No users found matching criteria" });
-    return;
-  }
-
-  res.status(200).json(result);
-  return;
-});
-
-userRouter.post("/");
 
 userRouter.get("/", (req, res) => {
   const query = req.query as UserQueryParams;
