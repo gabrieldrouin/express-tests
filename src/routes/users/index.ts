@@ -8,10 +8,10 @@ interface UserQueryParams {
 }
 export type UserUpdateBody =
   | {
-      name: number;
+      name: string;
     }
   | {
-      age: number;
+      age: string;
     };
 
 const userRouter = Router();
