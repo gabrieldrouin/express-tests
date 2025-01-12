@@ -1,16 +1,16 @@
+import { User } from "#mongoose/schemas/user.js";
+import { comparePassword } from "#utils/helpers.js";
+import { Types } from "mongoose";
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { User } from "#mongoose/schemas/user.js";
-import { Types } from "mongoose";
-import { comparePassword } from "#utils/helpers.js";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface User {
+      age?: number;
       id?: Types.ObjectId;
       name?: string;
-      age?: number;
       password?: string;
     }
   }
@@ -36,8 +36,8 @@ passport.deserializeUser((id: string, done) => {
 export default passport.use(
   new Strategy(
     {
-      usernameField: "name",
       passwordField: "password",
+      usernameField: "name",
     },
     (name, password, done) => {
       console.log(name);

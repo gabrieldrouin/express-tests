@@ -23,9 +23,9 @@ passport.deserializeUser((id: string, done) => {
 export default passport.use(
   new Strategy(
     {
+      callbackURL: process.env.DISCORD_CALLBACK_URL ?? "",
       clientID: process.env.DISCORD_CLIENT_ID ?? "",
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? "",
-      callbackURL: process.env.DISCORD_CALLBACK_URL ?? "",
       scope: ["identify"],
     },
     (accessToken, refreshToken, profile, done) => {
@@ -36,7 +36,7 @@ export default passport.use(
       DiscordUser.findOne({ discordID: profile.id })
         .then((findUser) => {
           if (!findUser) {
-            const newUser = new DiscordUser({ username: profile.username, discordID: profile.id });
+            const newUser = new DiscordUser({ discordID: profile.id, username: profile.username });
             newUser
               .save()
               .then((newSavedUser) => {

@@ -1,16 +1,18 @@
+import routes from "#routes/index.js";
+import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 // index.ts
 import express, { RequestHandler } from "express";
+import session from "express-session";
 //import cors from "cors";
 import helmet from "helmet";
-import morgan from "morgan";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import passport from "passport";
 import mongoose from "mongoose";
-import MongoStore from "connect-mongo";
+import morgan from "morgan";
+
 //import "./strategies/local-strategy.js";
 import "./strategies/discord-strategy.js";
-import routes from "#routes/index.js";
+
+import passport from "passport";
 
 declare module "express-session" {
   interface SessionData {
@@ -36,12 +38,12 @@ app.use(morgan("tiny"));
 app.use(cookieParser("supersecret"));
 app.use(
   session({
-    secret: "supersecret",
-    saveUninitialized: false,
-    resave: false,
     cookie: {
       maxAge: 200000,
     },
+    resave: false,
+    saveUninitialized: false,
+    secret: "supersecret",
     store: MongoStore.create({
       client: mongoose.connection.getClient(),
     }),

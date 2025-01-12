@@ -1,18 +1,18 @@
+import { createUserHandler, getUserByIdHandler } from "#handlers/users.js";
 import { IUser, UserBody, users } from "#utils/constants.js";
 import { Router } from "express";
-import { getUserByIdHandler } from "#handlers/users.js";
 
+export type UserUpdateBody =
+  | {
+      age: number;
+    }
+  | {
+      name: string;
+    };
 interface UserQueryParams {
   filter?: keyof IUser;
   value?: string;
 }
-export type UserUpdateBody =
-  | {
-      name: string;
-    }
-  | {
-      age: number;
-    };
 
 const userRouter = Router();
 
@@ -49,6 +49,8 @@ userRouter.get("/", (req, res) => {
 });
 
 userRouter.get("/:id", getUserByIdHandler);
+
+userRouter.post("/", createUserHandler);
 
 userRouter.patch("/:id", (req, res) => {
   const body = req.body as UserUpdateBody;

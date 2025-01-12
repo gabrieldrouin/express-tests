@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 const discordUserSchema = new mongoose.Schema({
-  username: {
-    type: String,
+  discordID: {
     required: true,
+    type: Number,
     unique: true,
   },
-  discordID: {
-    type: Number,
+  username: {
     required: true,
+    type: String,
     unique: true,
   },
 });

@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
 import { getUserByIdHandler } from "#handlers/users.js";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { Request, Response } from "express";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockRequest = {
   params: {
@@ -9,11 +9,11 @@ const mockRequest = {
 } as unknown as Request;
 
 const mockResponse = {
-  status: vi.fn().mockReturnThis(),
   json: vi.fn().mockReturnThis(),
+  status: vi.fn().mockReturnThis(),
 } as unknown as Response;
 
-const mockUser = { id: 1, name: "one", age: 1, password: "one" };
+const mockUser = { age: 1, id: 1, name: "one", password: "one" };
 
 const mockNext = vi.fn();
 

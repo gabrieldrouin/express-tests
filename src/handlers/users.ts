@@ -31,5 +31,6 @@ export const createUserHandler: RequestHandler = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.sendStatus(400);
+    return;
   }
 };

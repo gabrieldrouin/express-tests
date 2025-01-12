@@ -1,5 +1,5 @@
-import { Router } from "express";
 import { UserBody } from "#utils/constants.js";
+import { Router } from "express";
 
 const cartRouter = Router();
 
@@ -9,8 +9,8 @@ interface Product {
 
 declare module "express-session" {
   interface SessionData {
-    user: UserBody;
     cart: Record<string, number>;
+    user: UserBody;
   }
 }
 

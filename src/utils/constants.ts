@@ -1,13 +1,13 @@
 export const users: IUser[] = [
-  { id: 1, name: "one", age: 1, password: "one" },
-  { id: 2, name: "two", age: 2, password: "two" },
-  { id: 3, name: "three", age: 3, password: "three" },
+  { age: 1, id: 1, name: "one", password: "one" },
+  { age: 2, id: 2, name: "two", password: "two" },
+  { age: 3, id: 3, name: "three", password: "three" },
 ];
-export interface UserBody {
-  name: string;
-  age: number;
-  password: string;
-}
 export interface IUser extends UserBody {
   id: number;
+}
+export interface UserBody {
+  age: number;
+  name: string;
+  password: string;
 }
